@@ -1,0 +1,52 @@
+{
+    "variables": {
+        "region": "eu-west-1",
+        "build_vpc": "",
+        "build_subnet": "",
+        "public_ip": "true",
+        "build_instance_type": "t2.medium",
+        "role":"iis",
+        "website":"C:\\inetpub\\wwwroot",
+
+        "source_ami": ""
+
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+
+        "region": "{{ user `region` }}",
+        "vpc_id": "{{ user `build_vpc` }}",
+        "subnet_id": "{{ user `build_subnet` }}",
+        "associate_public_ip_address": "{{user `public_ip`}}",
+        "instance_type": "{{ user `build_instance_type` }}",
+
+        "source_ami": "{{ user `source_ami` }}",
+
+        "user_data_file": "{{template_dir}}/scripts/packer_userdata.ps1",
+
+        "communicator": "winrm",
+        "winrm_username": "Administrator",
+
+        "ami_name": "{{ user `role` }}-{{ timestamp }}",
+        "run_tags": { "Name": "Packer Builder {{ user `role` }}" },
+        "tags": { "Name": "{{ user `role` }}" } 
+    }],
+
+    "provisioners": [
+        {   
+            "type": "powershell",
+            "inline": [
+                "Add-WindowsFeature Web-Server",
+                "Add-WindowsFeature Web-Mgmt-Tools",
+                "Remove-Item {{user `website` }}\\* -recurse -force",
+                "Add-WindowsFeature Web-App-Dev",
+                "Add-WindowsFeature Web-Asp-Net45"
+            ]
+        },
+        {
+            "type": "file",
+            "source": "{{template_dir}}/aspsite/",
+            "destination": "{{user `website` }}"
+        }
+    ]
+}
