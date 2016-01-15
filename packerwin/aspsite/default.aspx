@@ -2,25 +2,30 @@
 
 <%@ Import Namespace="System"%>
 <%@ Import Namespace="System.Data"%>
+<%@ Import Namespace="System.Net"%>
 <%@ Import Namespace="System.Web.Configuration"%>
 <%@ Import Namespace="System.Data.SqlClient"%>
 
 <%
-String hello;
-String date;
+
 String table="mytable";
 String connectionString="mydb";
 
-hello="Hello world";
-date=DateTime.Now.ToString();
-String sql="select hello from "+table;
+String hello="Hello world";
+String date=DateTime.Now.ToString();
 
+IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName()); // `Dns.Resolve()` method is deprecated.
+IPAddress ipAddress = ipHostInfo.AddressList[0];
+String serverIP=ipAddress.ToString();
+
+String sql="select hello from "+table;
 SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["mydb"].ConnectionString);
 conn.Open();
 
 SqlCommand cmd = new SqlCommand(sql, conn);
 DataTable dt= new DataTable();
 dt.Load(cmd.ExecuteReader());
+
 %>
 
 <html>
@@ -28,7 +33,8 @@ dt.Load(cmd.ExecuteReader());
 <h2>
 <%= hello %>
 </h2>
-<p>Welcome! <%= date %></p>
-<p>Result: <%= dt.Rows[0][0]  %></p>
+<p>The time is <%= date %></p>
+<p>Server IP is <%= serverIP %></p>
+<p>Content of the first table row: <%= dt.Rows[0][0]  %></p>
 </body>
 </html>
