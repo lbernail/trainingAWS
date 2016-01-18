@@ -1,0 +1,53 @@
+{
+    "variables": {
+        "region": "eu-west-1",
+        "build_vpc": "",
+        "build_subnet": "",
+        "public_ip": "true",
+        "build_instance_type": "t2.medium",
+        "role":"apache",
+        "website":"/var/www/html",
+        "source_ami": ""
+
+    },
+    "builders": [{
+        "type": "amazon-ebs",
+
+        "region": "{{ user `region` }}",
+        "vpc_id": "{{ user `build_vpc` }}",
+        "subnet_id": "{{ user `build_subnet` }}",
+        "associate_public_ip_address": "{{user `public_ip`}}",
+        "instance_type": "{{ user `build_instance_type` }}",
+
+        "source_ami": "{{ user `source_ami` }}",
+        
+        "ssh_username": "admin",
+
+        "ami_name": "{{ user `role` }}-{{ timestamp }}",
+        "run_tags": { "Name": "Packer Builder {{ user `role` }}" },
+        "tags": { "Name": "{{ user `role` }}" } 
+    }],
+
+    "provisioners": [
+        {   
+            "type": "shell",
+            "inline": [
+                "sudo -E apt-get update -q",
+                "sudo -E apt-get install -y apache2 php5 libapache2-mod-php5 php5-curl php5-mysql"
+            ],
+            "environment_vars": ["DEBIAN_FRONTEND=noninteractive"]
+        },
+        {
+            "type": "file",
+            "source": "{{template_dir}}/phpsite",
+            "destination": "/tmp/www"
+        },
+        {   
+            "type": "shell",
+            "inline": [
+                "sudo -E rm -rf {{ user `website` }}",
+                "sudo  mv /tmp/www /var/www/html"
+            ]
+        }
+    ]
+}
