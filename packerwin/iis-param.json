@@ -3,4 +3,6 @@
     "build_vpc": "vpc-e6bd6183",
     "build_subnet": "subnet-68a77031",
     "source_ami": "ami-7943ec0a"
+    "access_key": "xxxx",
+    "secret_key": "xxxx"
 }

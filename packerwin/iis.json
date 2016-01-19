@@ -1,6 +1,8 @@
 {
     "variables": {
         "region": "eu-west-1",
+        "access_key": "",
+        "secret_key": "",
         "build_vpc": "",
         "build_subnet": "",
         "public_ip": "true",
@@ -13,6 +15,8 @@
     },
     "builders": [{
         "type": "amazon-ebs",
+        "access_key": "{{ user `access_key` }}",
+        "secret_key": "{{ user `secret_key` }}",
 
         "region": "{{ user `region` }}",
         "vpc_id": "{{ user `build_vpc` }}",
