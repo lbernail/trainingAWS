@@ -3,6 +3,7 @@
 <%@ Import Namespace="System"%>
 <%@ Import Namespace="System.Data"%>
 <%@ Import Namespace="System.Net"%>
+<%@ Import Namespace="System.Net.Sockets"%>
 <%@ Import Namespace="System.Web.Configuration"%>
 <%@ Import Namespace="System.Data.SqlClient"%>
 
@@ -14,8 +15,9 @@ String connectionString="mydb";
 String hello="Hello world";
 String date=DateTime.Now.ToString();
 
-IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName()); // `Dns.Resolve()` method is deprecated.
+IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
 IPAddress ipAddress = ipHostInfo.AddressList[0];
+if (ipAddress.AddressFamily != AddressFamily.InterNetwork) ipAddress = ipHostInfo.AddressList[1];
 String serverIP=ipAddress.ToString();
 
 String sql="select hello from "+table;
