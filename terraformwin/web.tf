@@ -35,7 +35,7 @@ resource "aws_security_group" "sg_web" {
 
 resource "aws_elb" "myelb" {
     name = "myelb"
-    subnets = ["${split(",",var.public_subnets)}"]
+    subnets = ["${split(",",var.elb_subnets)}"]
     security_groups = ["${aws_security_group.sg_elb.id}"]
     cross_zone_load_balancing = "true"
     listener {
@@ -64,6 +64,7 @@ resource "template_file" "user_data" {
          db_user = "${var.db_user}"
          db_password = "${var.db_password}"
     }
+    lifecycle { create_before_destroy = "true" }
 }
 
 resource "aws_launch_configuration" "web" {
@@ -73,20 +74,23 @@ resource "aws_launch_configuration" "web" {
     key_name = "${var.key_name}"
     security_groups = ["${aws_security_group.sg_web.id}"]
     user_data="${template_file.user_data.rendered}"
+    lifecycle { create_before_destroy = "true" }
 }
 
 resource "aws_autoscaling_group" "web_asg" {
     name = "${concat("web-",aws_launch_configuration.web.name)}"
     launch_configuration = "${aws_launch_configuration.web.id}"
     availability_zones = ["${split(",",var.azs)}"]
-    vpc_zone_identifier = ["${split(",",var.public_subnets)}"]
+    vpc_zone_identifier = ["${split(",",var.instance_subnets)}"]
     load_balancers = ["${aws_elb.myelb.name}"]
 
     tag { key = "Name" value = "Web" propagate_at_launch = "true" }
 
     min_size = "${var.asg_min}"
     max_size = "${var.asg_max}"
+    wait_for_elb_capacity  = 1
     desired_capacity = "${var.asg_desired}"
+    lifecycle { create_before_destroy = "true" }
 }
 
 output "elb" { value = "${aws_elb.myelb.dns_name}" }

@@ -8,7 +8,8 @@ variable "web_instance_type" {}
 
 variable "vpc_id" {}
 variable "azs" {}
-variable "public_subnets" {}
+variable "elb_subnets" {}
+variable "instance_subnets" {}
 
 variable "asg_min" {}
 variable "asg_max" {}
