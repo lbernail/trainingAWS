@@ -1,3 +1,6 @@
+access_key              = "xxxx"
+secret_key              = "xxxx"
+
 key_name                = "aws-dev"
 
 web_ami                 = "ami-125af161"
