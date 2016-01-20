@@ -88,7 +88,7 @@ resource "aws_autoscaling_group" "web_asg" {
 
     min_size = "${var.asg_min}"
     max_size = "${var.asg_max}"
-    wait_for_elb_capacity  = 1
+    wait_for_elb_capacity  = "${var.asg_desired}"
     desired_capacity = "${var.asg_desired}"
     lifecycle { create_before_destroy = "true" }
 }
