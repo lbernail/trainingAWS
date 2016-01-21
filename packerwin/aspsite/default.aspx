@@ -28,6 +28,8 @@ SqlCommand cmd = new SqlCommand(sql, conn);
 DataTable dt= new DataTable();
 dt.Load(cmd.ExecuteReader());
 
+conn.Close();
+
 %>
 
 <html>
