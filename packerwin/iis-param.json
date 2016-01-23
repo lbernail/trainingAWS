@@ -2,7 +2,7 @@
     "region" : "eu-west-1",
     "build_vpc": "vpc-xxxx",
     "build_subnet": "subnet-xxxx",
-    "source_ami": "ami-xxxx"
+    "source_ami": "ami-xxxx",
     "access_key": "xxxx",
     "secret_key": "xxxx"
 }
