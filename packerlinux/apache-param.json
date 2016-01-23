@@ -3,6 +3,8 @@
     "build_vpc": "vpc-xxxx",
     "build_subnet": "subnet-xxxx",
     "source_ami": "ami-xxxx",
+    "distribution": "xxxx",
+    "distribution_user": "xxxx",
     "access_key": "xxxx",
     "secret_key": "xxxx"
 }

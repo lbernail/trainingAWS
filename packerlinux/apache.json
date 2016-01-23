@@ -7,6 +7,9 @@
         "build_subnet": "",
         "public_ip": "true",
         "build_instance_type": "t2.medium",
+        "distribution": "",
+        "distribution_user": "",
+        "ssh_pty": "true",
         "role":"apache",
         "website":"/var/www/html",
         "source_ami": ""
@@ -25,21 +28,20 @@
 
         "source_ami": "{{ user `source_ami` }}",
         
-        "ssh_username": "admin",
+        "ssh_username": "{{user `distribution_user`}}",
+        "ssh_pty": "{{user `ssh_pty` }}",
 
-        "ami_name": "{{ user `role` }}-{{ timestamp }}",
-        "run_tags": { "Name": "Packer Builder {{ user `role` }}" },
-        "tags": { "Name": "{{ user `role` }}" } 
+        "ami_name": "{{ user `role` }}-{{ user `distribution` }}-{{ timestamp }}",
+        "run_tags": { "Name": "Packer Builder {{ user `role` }}-{{ user `distribution` }}" },
+        "tags": { "Name": "{{ user `role` }}-{{ user `distribution` }}" } 
     }],
 
     "provisioners": [
         {   
             "type": "shell",
-            "inline": [
-                "sudo -E apt-get update -q",
-                "sudo -E apt-get install -y apache2 php5 libapache2-mod-php5 php5-curl php5-mysql"
-            ],
-            "environment_vars": ["DEBIAN_FRONTEND=noninteractive"]
+            "scripts": [
+                "{{template_dir}}/scripts/{{ user `distribution` }}.sh"
+            ]
         },
         {
             "type": "file",
@@ -49,7 +51,7 @@
         {   
             "type": "shell",
             "inline": [
-                "sudo -E rm -rf {{ user `website` }}",
+                "sudo rm -rf {{ user `website` }}",
                 "sudo  mv /tmp/www /var/www/html"
             ]
         }
