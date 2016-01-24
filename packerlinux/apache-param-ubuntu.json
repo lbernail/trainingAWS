@@ -1,0 +1,10 @@
+{
+    "region" : "eu-west-1",
+    "build_vpc": "vpc-xxxxxxxx",
+    "build_subnet": "subnet-xxxxxxxx",
+    "source_ami": "ami-f95ef58a",
+    "distribution": "ubuntu",
+    "distribution_user": "ubuntu",
+    "access_key": "AKxxxx"
+    "secret_key": "xxxx"
+}

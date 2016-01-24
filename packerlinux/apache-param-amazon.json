@@ -1,0 +1,10 @@
+{
+    "region" : "eu-west-1",
+    "build_vpc": "vpc-xxxxxxxx",
+    "build_subnet": "subnet-xxxxxxxx",
+    "source_ami": "ami-bff32ccc",
+    "distribution": "amazon",
+    "distribution_user": "ec2-user",
+    "access_key": "AKxxxx"
+    "secret_key": "xxxx"
+}
