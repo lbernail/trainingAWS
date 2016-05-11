@@ -12,8 +12,8 @@ asg_desired             = 2
 
 vpc_id                  = "vpc-xxxx"
 azs                     = "eu-west-1a,eu-west-1b"
-elb_subnets             = "subnet-68a77031,subnet-b8008add"
-instance_subnets        = "subnet-68a77031,subnet-b8008add"
+elb_subnets             = "subnet-xxx,subnet-xxx"
+instance_subnets        = "subnet-xxx,subnet-xxx"
 
 db_endpoint             = "xxxx.eu-west-1.rds.amazonaws.com"
 db_instance             = "xxxx"
