@@ -5,6 +5,6 @@
     "source_ami": "ami-f95ef58a",
     "distribution": "ubuntu",
     "distribution_user": "ubuntu",
-    "access_key": "AKxxxx"
+    "access_key": "AKxxxx",
     "secret_key": "xxxx"
 }

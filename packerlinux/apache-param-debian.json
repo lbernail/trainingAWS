@@ -5,6 +5,6 @@
     "source_ami": "ami-99f39eee",
     "distribution": "debian",
     "distribution_user": "admin",
-    "access_key": "AKxxxx"
+    "access_key": "AKxxxx",
     "secret_key": "xxxx"
 }

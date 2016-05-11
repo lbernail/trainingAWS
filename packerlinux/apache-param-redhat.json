@@ -5,6 +5,6 @@
     "source_ami": "ami-8b8c57f8",
     "distribution": "redhat",
     "distribution_user": "ec2-user",
-    "access_key": "AKxxxx"
+    "access_key": "AKxxxx",
     "secret_key": "xxxx"
 }
