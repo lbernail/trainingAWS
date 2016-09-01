@@ -1,0 +1,7 @@
+<powershell>
+$webconfig= "c:\inetpub\wwwroot\web.config"
+$xml = [xml](get-content $webconfig)
+$xml_mydb = ($xml.configuration.connectionStrings.add |where {$_.name -eq "mydb"})
+$xml_mydb.connectionString="Server=ENDPOINT;Database=DATABASE;User Id=USER;Password=PASSWORD;"
+$xml.Save($webconfig)
+</powershell>
