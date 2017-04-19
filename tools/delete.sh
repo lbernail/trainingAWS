@@ -7,9 +7,9 @@ group="admin"
 while read -r line
 do
     a=(${line//,/ }) ;
-    export AWS_ACCESS_KEY_ID=${a[0]}
-    export AWS_SECRET_ACCESS_KEY=${a[1]}
-    user=${a[2]}
+    export AWS_ACCESS_KEY_ID=${a[2]}
+    export AWS_SECRET_ACCESS_KEY=${a[3]}
+    user=$(echo "${a[0]}" |sed 's/\([^-]\+\)-[^-]\+-\([^-]\+\)@.*/\1\2/')
 
     aws iam delete-account-alias --account-alias $user
 
