@@ -36,7 +36,6 @@ do
     cred=($output)
 
     # set user rights
-    #aws iam put-user-policy --user-name $user --policy-name "CustomPolicy" --policy-document file://inline_policy.json
     for policy in $managed_policies; do
         aws iam attach-user-policy --user-name $user --policy-arn arn:aws:iam::aws:policy/$policy
     done
