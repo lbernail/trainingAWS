@@ -52,11 +52,13 @@ resource "aws_elb" "myelb" {
         interval = "5"
     }
     tags {
-        Name = "${myelb}"
+        Name = "myelb"
     }
 }
 
-resource "template_file" "user_data" {
+
+
+data "template_file" "user_data" {
     template = "${file("linux_user_data.tpl")}"
     vars {
          db_endpoint = "${var.db_endpoint}"
@@ -64,7 +66,6 @@ resource "template_file" "user_data" {
          db_user = "${var.db_user}"
          db_password = "${var.db_password}"
     }
-    lifecycle { create_before_destroy = "true" }
 }
 
 resource "aws_launch_configuration" "web" {
@@ -73,12 +74,12 @@ resource "aws_launch_configuration" "web" {
     instance_type = "${var.web_instance_type}"
     key_name = "${var.key_name}"
     security_groups = ["${aws_security_group.sg_web.id}"]
-    user_data="${template_file.user_data.rendered}"
+    user_data="${data.template_file.user_data.rendered}"
     lifecycle { create_before_destroy = "true" }
 }
 
 resource "aws_autoscaling_group" "web_asg" {
-    name = "${concat("web-",aws_launch_configuration.web.name)}"
+    name = "web-${aws_launch_configuration.web.name}"
     launch_configuration = "${aws_launch_configuration.web.id}"
     availability_zones = ["${split(",",var.azs)}"]
     vpc_zone_identifier = ["${split(",",var.instance_subnets)}"]
